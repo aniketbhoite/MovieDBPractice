@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 data class NowPlayingMoviesResponse(
     val page: Int,
 
-    val result: Array<MovieData>,
+    val results: Array<MovieData>,
 
     @Json(name = "total_pages") val totalPages: Int
 )

@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aniket.moviedbpractice.R
 import com.aniket.moviedbpractice.databinding.FragmentMovieListBinding
-import com.aniket.moviedbpractice.repositories.MovieListReposirory
+import com.aniket.moviedbpractice.network.MovieApiClient
+import com.aniket.moviedbpractice.repositories.MovieListRepository
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModel
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModelFactory
 
@@ -20,22 +23,38 @@ class MovieListFragment : Fragment() {
     private lateinit var binding: FragmentMovieListBinding
 
     private val viewModel: MovieListViewModel by viewModels {
-        MovieListViewModelFactory(MovieListReposirory())
+        MovieListViewModelFactory(MovieListRepository(MovieApiClient.apiServices))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_list, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_movie_list, container, false
+        )
+
+        binding.viewModel = viewModel
+
 
         initView()
 
         return binding.root
     }
 
-    fun initView() {
-        binding.viewModel = viewModel
+    private fun initView() {
+
+        binding.apply {
+            rvMovieList.layoutManager = LinearLayoutManager(activity)
+
+        }
+
+
+
+        viewModel.getNowPlayingMovies().observe(this, Observer {
+            binding.rvMovieList.adapter = MovieAdapter(it)
+        })
     }
 
 

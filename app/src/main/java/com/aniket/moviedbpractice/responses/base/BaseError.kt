@@ -11,5 +11,5 @@ data class BaseError(
 
     val success: Boolean = false,
 
-    @Json(name = "status_code") val statusCode: String
+    @Json(name = "status_code") val statusCode: Int
 )
