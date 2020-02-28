@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.aniket.moviedbpractice.viewmodel.MovieItemViewModel" />
+    </data>
+
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:elevation="4dp"
+        android:layout_margin="8dp"
+        android:elevation="8dp"
+        android:onClick="@{viewModel.onMovieClickListener}"
         app:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{viewModel.onMovieClickListener}"
             android:padding="8dp">
 
             <ImageView
                 android:id="@+id/iv_poster"
+                loadUrl="@{viewModel.movieData.posterLink}"
                 android:layout_width="80dp"
                 android:layout_height="120dp"
+                android:onClick="@{viewModel.onMovieClickListener}"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +39,16 @@
             <TextView
                 android:id="@+id/tv_movie_title"
                 style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:onClick="@{viewModel.onMovieClickListener}"
+                android:text="@{viewModel.movieData.title}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_poster"
                 app:layout_constraintTop_toTopOf="@id/iv_poster"
                 tools:text="@tools:sample/lorem" />
@@ -42,6 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:onClick="@{viewModel.onMovieClickListener}"
+                android:text="@{viewModel.movieData.releaseDate}"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
                 tools:text="21 March 2020" />
@@ -50,6 +69,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{viewModel.onMovieClickListener}"
                 android:text="@string/book_now"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
