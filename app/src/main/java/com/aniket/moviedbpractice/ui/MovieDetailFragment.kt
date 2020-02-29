@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,8 +17,10 @@ import com.aniket.moviedbpractice.databinding.FragmentMovieDetailBinding
 import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.DetailedRepository
 import com.aniket.moviedbpractice.responses.MovieData
+import com.aniket.moviedbpractice.responses.base.EventObserver
 import com.aniket.moviedbpractice.ui.MovieAdapter.Companion.MOVIE_THUMB_ITEM_TYPE
 import com.aniket.moviedbpractice.util.MarginItemDecoration
+import com.aniket.moviedbpractice.util.exhaustive
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModel
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModelFactory
 
@@ -85,6 +88,23 @@ class MovieDetailFragment : Fragment() {
                 }
             }
         })
+
+        viewModel.getEvents().observe(this, EventObserver {
+            when (it) {
+                is DetailedViewModel.ViewEvent.FinishedLoading -> {
+                    hideLoading()
+                    showDetails()
+                }
+                is DetailedViewModel.ViewEvent.SimilarMoviesApiError -> hideSimilarSection()
+                is DetailedViewModel.ViewEvent.ShowError -> {
+                    showError(it.message)
+                }
+            }.exhaustive
+        })
+
+        binding.btRetry.setOnClickListener {
+            viewModel.retryLoading()
+        }
     }
 
     companion object {
@@ -106,6 +126,27 @@ class MovieDetailFragment : Fragment() {
         binding.apply {
             tvSimilarTo.visibility = GONE
             rvSimilar.visibility = GONE
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            pbLoading.visibility = GONE
+            tvScreenMsg.visibility = GONE
+            btRetry.visibility = GONE
+        }
+    }
+
+    private fun showDetails(){
+        binding.clDetailsContainer.visibility = VISIBLE
+    }
+
+    private fun showError(message: String) {
+        hideLoading()
+        binding.apply {
+            tvScreenMsg.visibility = VISIBLE
+            tvScreenMsg.text = message
+            btRetry.visibility = VISIBLE
         }
     }
 

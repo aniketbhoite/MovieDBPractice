@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aniket.moviedbpractice.repositories.DetailedRepository
 import com.aniket.moviedbpractice.responses.*
+import com.aniket.moviedbpractice.responses.base.Event
 import com.aniket.moviedbpractice.responses.base.Result
 import com.aniket.moviedbpractice.util.exhaustive
 import kotlinx.coroutines.async
@@ -27,6 +28,14 @@ class DetailedViewModel(
         MutableLiveData<List<MovieData>>().also {
             loadSimilarMovie()
         }
+    }
+
+    private val event: MutableLiveData<Event<ViewEvent>> by lazy {
+        MutableLiveData<Event<ViewEvent>>()
+    }
+
+    fun getEvents(): LiveData<Event<ViewEvent>> {
+        return event
     }
 
     fun getDetailsData(): LiveData<MovieDetailsData> = movieDetailsData
@@ -55,7 +64,7 @@ class DetailedViewModel(
                     }
                 }
                 is Result.Error -> {
-
+                    event.value = Event(ViewEvent.SimilarMoviesApiError)
                 }
             }.exhaustive
         }
@@ -66,25 +75,46 @@ class DetailedViewModel(
         reviewsResult: Result<ReviewsResponse>,
         creditsResult: Result<Credits>
     ) {
-        if (synopsisResult is Result.Success) {
-            val movieSynopsis = synopsisResult.data
-            var reviews: ReviewsResponse? = null
-            if (reviewsResult is Result.Success) {
-                reviews = reviewsResult.data
-            }
-            var credits: Credits? = null
-            if (creditsResult is Result.Success) {
-                credits = creditsResult.data
-            }
 
-            val tempData =
-                MovieDetailsData(
-                    movieSynopsis,
-                    reviewsResponse = reviews,
-                    credits = credits
-                )
-            movieDetailsData.value = tempData
-        }
+        when (synopsisResult) {
+            is Result.Success -> {
 
+                val movieSynopsis = synopsisResult.data
+                var reviews: ReviewsResponse? = null
+                if (reviewsResult is Result.Success) {
+                    reviews = reviewsResult.data
+                }
+                var credits: Credits? = null
+                if (creditsResult is Result.Success) {
+                    credits = creditsResult.data
+                }
+
+                val tempData =
+                    MovieDetailsData(
+                        movieSynopsis,
+                        reviewsResponse = reviews,
+                        credits = credits
+                    )
+                event.value = Event(ViewEvent.FinishedLoading)
+                movieDetailsData.value = tempData
+
+            }
+            is Result.Error -> {
+                event.value = Event(ViewEvent.ShowError(synopsisResult.message))
+            }
+        }.exhaustive
+
+    }
+
+    fun retryLoading() {
+        loadMovieDetailsData()
+        loadSimilarMovie()
+    }
+
+
+    sealed class ViewEvent {
+        object FinishedLoading : ViewEvent()
+        object SimilarMoviesApiError : ViewEvent()
+        class ShowError(val message: String) : ViewEvent()
     }
 }
