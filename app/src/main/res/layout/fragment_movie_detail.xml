@@ -1,22 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="movieData"
+            type="com.aniket.moviedbpractice.responses.MovieData" />
+
         <variable
             name="viewModel"
             type="com.aniket.moviedbpractice.viewmodel.DetailedViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.MovieDetailFragment"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingBottom="24dp"
+            tools:context=".ui.MovieDetailFragment">
+
+
+            <ImageView
+                android:id="@+id/ig_backdrop_poster"
+                loadUrl="@{movieData.moviePoster}"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+
+            <ImageView
+                android:id="@+id/iv_back_nev"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_movie_title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:maxLines="2"
+                android:text="@{movieData.title}"
+                android:textSize="22sp"
+                app:layout_constraintTop_toBottomOf="@id/ig_backdrop_poster"
+                tools:text="Birds of Prey " />
+
+            <TextView
+                android:id="@+id/tv_votes"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableEnd="@drawable/ic_thumb_up"
+                android:drawablePadding="4dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
+                tools:text="8/10 " />
+
+            <TextView
+                android:id="@+id/tv_runtime"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawablePadding="4dp"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
+                tools:text="Runtime: 2h 20min" />
+
+            <TextView
+                android:id="@+id/tv_genres"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@id/tv_runtime"
+                app:layout_constraintTop_toBottomOf="@id/tv_runtime"
+                tools:text="Action | Comedy" />
+
+            <TextView
+                android:id="@+id/tv_movie_overview"
+                style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:maxHeight="250dp"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_genres"
+                tools:text="@tools:sample/lorem/random"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_cast_title"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/cast"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_movie_overview" />
+
+            <TextView
+                android:id="@+id/tv_cast_names"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_cast_title"
+                tools:text="Chris Evens, Robert D jr., Chris Hemsworth" />
+
+
+            <TextView
+                android:id="@+id/tv_reviews_title"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/reviews"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_cast_names" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_reviews"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_reviews_title"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_review" />
+
+            <TextView
+                android:id="@+id/tv_similar_to"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:maxLines="1"
+                android:text="@{`Similar to` + movieData.title}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/tv_movie_title"
+                app:layout_constraintTop_toBottomOf="@id/rv_reviews"
+                tools:text="Similar to Birds of Prey" />
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>
