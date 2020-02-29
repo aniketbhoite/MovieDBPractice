@@ -9,6 +9,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -102,7 +104,14 @@ class MovieListFragment : Fragment() {
     }
 
     private fun openDetailsScreen(movieData: MovieData) {
-
+        (context as FragmentActivity).supportFragmentManager.commit {
+            addToBackStack(this@MovieListFragment::class.java.simpleName)
+            add(
+                R.id.container,
+                MovieDetailFragment.getInstance(movieData),
+                null
+            )
+        }
     }
 
 
