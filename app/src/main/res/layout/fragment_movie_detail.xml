@@ -49,6 +49,7 @@
                 android:layout_height="32dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_arrow_back"
+                android:background="@drawable/bg_transparent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,7 +95,7 @@
 
             <Button
                 android:id="@+id/bt_retry"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

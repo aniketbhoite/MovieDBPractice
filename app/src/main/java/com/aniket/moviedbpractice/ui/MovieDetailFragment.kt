@@ -105,6 +105,10 @@ class MovieDetailFragment : Fragment() {
         binding.btRetry.setOnClickListener {
             viewModel.retryLoading()
         }
+
+        binding.ivBackNev.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     companion object {

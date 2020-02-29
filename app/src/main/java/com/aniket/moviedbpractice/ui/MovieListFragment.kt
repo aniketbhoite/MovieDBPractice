@@ -7,6 +7,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -47,6 +49,7 @@ class MovieListFragment : Fragment() {
 
 
         initView()
+        initToolBar()
 
         return binding.root
     }
@@ -84,6 +87,18 @@ class MovieListFragment : Fragment() {
                 }
             }.exhaustive
         })
+    }
+
+    private fun initToolBar() {
+        binding.toolbar.setTitleTextColor(
+            ContextCompat.getColor(
+                activity!!.applicationContext,
+                android.R.color.white
+            )
+        )
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+        (activity as AppCompatActivity).supportActionBar?.title = "Now Playing"
     }
 
     private fun hideLoading() {

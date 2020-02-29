@@ -15,11 +15,23 @@
         android:layout_height="match_parent"
         tools:context=".ui.MovieListFragment">
 
+        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_movie_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:itemCount="4"
             tools:listitem="@layout/item_movie" />
 
@@ -46,19 +58,19 @@
 
         <Button
             android:id="@+id/bt_retry"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/retry"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_red_light"
-            android:visibility="gone"
             android:textSize="20sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/tv_screen_msg"
             app:layout_constraintStart_toStartOf="@id/tv_screen_msg"
-            tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/tv_screen_msg" />
+            app:layout_constraintTop_toBottomOf="@id/tv_screen_msg"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
