@@ -33,7 +33,7 @@ class MovieListViewModel(private val repo: MovieListRepository) : ViewModel() {
 
     private fun loadNowPlayingMovies() {
         viewModelScope.launch {
-            val result = repo.getPopularMovies()
+            val result = repo.getNowPlayingMovies()
             when (result) {
                 is Result.Success -> {
                     result.data.results.let {

@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.aniket.moviedbpractice.R
 import com.aniket.moviedbpractice.databinding.FragmentMovieDetailBinding
+import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.DetailedRepository
 import com.aniket.moviedbpractice.responses.MovieData
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModel
@@ -23,7 +25,10 @@ class MovieDetailFragment : Fragment() {
     private lateinit var movieData: MovieData
 
     private val viewModel: DetailedViewModel by viewModels {
-        DetailedViewModelFactory(DetailedRepository())
+        DetailedViewModelFactory(
+            DetailedRepository(MovieApiClient.apiServices),
+            movieData
+        )
     }
 
     override fun onCreateView(
@@ -37,6 +42,8 @@ class MovieDetailFragment : Fragment() {
         )
 
         binding.viewModel = viewModel
+        binding.movieData = movieData
+
 
         initView()
 
@@ -44,7 +51,9 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun initView() {
+        viewModel.getMovieDetailsData().observe(this, Observer {
 
+        })
     }
 
     companion object {

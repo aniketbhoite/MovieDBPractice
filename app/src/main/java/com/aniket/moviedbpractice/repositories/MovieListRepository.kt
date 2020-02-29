@@ -16,7 +16,7 @@ class MovieListRepository(private val apiServices: ApiServices) : BaseRepository
         Moshi.Builder().build()
     }
 
-    suspend fun getPopularMovies(): Result<NowPlayingMoviesResponse> {
+    suspend fun getNowPlayingMovies(): Result<NowPlayingMoviesResponse> {
 
         return safeApiCall("Something went wrong",
             call = {

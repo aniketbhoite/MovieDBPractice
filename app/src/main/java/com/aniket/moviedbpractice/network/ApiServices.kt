@@ -1,6 +1,6 @@
 package com.aniket.moviedbpractice.network
 
-import com.aniket.moviedbpractice.responses.Creadits
+import com.aniket.moviedbpractice.responses.Credits
 import com.aniket.moviedbpractice.responses.MovieSynopsis
 import com.aniket.moviedbpractice.responses.NowPlayingMoviesResponse
 import com.aniket.moviedbpractice.responses.ReviewsResponse
@@ -21,5 +21,5 @@ interface ApiServices {
     suspend fun getMovieSynopsis(@Path("movieId") movieId: Int): Response<MovieSynopsis>
 
     @GET("movie/{movieId}/credits")
-    suspend fun getCreadits(@Path("movieId") movieId: Int): Response<Creadits>
+    suspend fun getCredits(@Path("movieId") movieId: Int): Response<Credits>
 }

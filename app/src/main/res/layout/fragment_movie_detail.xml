@@ -17,7 +17,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -163,12 +164,14 @@
             <TextView
                 android:id="@+id/tv_similar_to"
                 style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{`Similar to` + movieData.title}"
+                android:text="@{`Similar to ` + movieData.title}"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/rv_reviews"
                 tools:text="Similar to Birds of Prey" />
