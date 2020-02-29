@@ -13,5 +13,7 @@ data class ReviewsResponse(
 
     val page: Int,
 
-    @Json(name = "total_pages") val totalPages: Int
+    @Json(name = "total_pages") val totalPages: Int,
+
+    val results: Array<Review>
 )

@@ -22,7 +22,7 @@ class DetailedViewModel(
         }
     }
 
-    fun getMovieDetailsData(): LiveData<MovieDetailsData> = movieDetailsData
+    fun getDetailsData(): LiveData<MovieDetailsData> = movieDetailsData
 
 
     private fun loadMovieDetailsData() {

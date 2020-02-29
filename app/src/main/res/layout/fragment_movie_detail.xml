@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="movieData"
             type="com.aniket.moviedbpractice.responses.MovieData" />
@@ -71,6 +73,8 @@
                 android:layout_marginTop="12dp"
                 android:drawableEnd="@drawable/ic_thumb_up"
                 android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@{String.valueOf(viewModel.detailsData.movieSynopsis.voteAverage) + `/10`}"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
@@ -83,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:drawablePadding="4dp"
+                android:text="@{viewModel.detailsData.movieSynopsis.runtimeString}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_title"
@@ -94,6 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:text="@{viewModel.detailsData.movieSynopsis.genersString}"
                 android:textSize="14sp"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="@id/tv_runtime"
@@ -107,11 +113,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:maxHeight="250dp"
+                android:text="@{viewModel.detailsData.movieSynopsis.overview}"
                 app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_genres"
-                tools:text="@tools:sample/lorem/random"
-                tools:visibility="gone" />
+                tools:text="@tools:sample/lorem/random" />
 
             <TextView
                 android:id="@+id/tv_cast_title"
@@ -121,22 +127,25 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/cast"
                 android:textSize="16sp"
+                android:visibility="@{viewModel.detailsData.credits != null ? View.VISIBLE : View.GONE }"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_movie_overview" />
+
 
             <TextView
                 android:id="@+id/tv_cast_names"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:maxLines="2"
+                android:text="@{viewModel.detailsData.credits.castsString}"
                 android:textSize="20sp"
+                android:visibility="@{viewModel.detailsData.credits != null ? View.VISIBLE : View.GONE }"
                 app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_cast_title"
                 tools:text="Chris Evens, Robert D jr., Chris Hemsworth" />
-
 
             <TextView
                 android:id="@+id/tv_reviews_title"
@@ -154,7 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="@id/tv_movie_title"
                 app:layout_constraintStart_toStartOf="@id/tv_movie_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_reviews_title"
@@ -181,9 +190,10 @@
                 android:id="@+id/rv_similar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_similar_to"

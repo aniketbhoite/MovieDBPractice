@@ -14,11 +14,32 @@ data class MovieSynopsis(
 
     val id: Int,
 
-    val overView: String?,
+    val overview: String?,
 
     val genres: Array<Genre>,
 
     @Json(name = "vote_average") val voteAverage: Float,
 
     val runtime: Int
-)
+) {
+    val runtimeString: String
+        get() = formatRuntime(runtime)
+
+    private fun formatRuntime(time: Int): String {
+        val hours: Int = time / 60 //since both are ints, you get an int
+
+        val minutes: Int = time % 60
+
+        return "${hours}h ${minutes}min"
+    }
+
+    val genersString: String
+        get() = formatGenres(genres)
+
+
+    private fun formatGenres(genres: Array<Genre>): String {
+        return genres.joinToString(" | ") {
+            it.name
+        }
+    }
+}
