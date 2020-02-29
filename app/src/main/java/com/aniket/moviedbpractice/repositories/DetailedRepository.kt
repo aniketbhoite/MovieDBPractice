@@ -3,6 +3,7 @@ package com.aniket.moviedbpractice.repositories
 import com.aniket.moviedbpractice.network.ApiServices
 import com.aniket.moviedbpractice.responses.Credits
 import com.aniket.moviedbpractice.responses.MovieSynopsis
+import com.aniket.moviedbpractice.responses.MoviesListResponse
 import com.aniket.moviedbpractice.responses.ReviewsResponse
 import com.aniket.moviedbpractice.responses.base.BaseError
 import com.aniket.moviedbpractice.responses.base.Result
@@ -77,6 +78,25 @@ class DetailedRepository(private val apiServices: ApiServices) : BaseRepository(
                     }
                 }
 
+            })
+    }
+
+    suspend fun getSimilarMovies(movieId: Int): Result<MoviesListResponse> {
+        return safeApiCall("Something went wrong",
+            call = {
+                val response = apiServices.getSimilarMovies(movieId)
+                if (response.isSuccessful) {
+                    if (response.body() != null)
+                        Result.Success(response.body()!!)
+                    else Result.Error("No Data found")
+                } else {
+                    val jsonAdapter: JsonAdapter<BaseError> =
+                        moshi.adapter<BaseError>(BaseError::class.java)
+                    withContext(Dispatchers.IO) {
+                        val error = jsonAdapter.fromJson(response.errorBody()!!.toString())
+                        Result.Error(error!!.statusMessage)
+                    }
+                }
             })
     }
 

@@ -1,7 +1,7 @@
 package com.aniket.moviedbpractice.repositories
 
 import com.aniket.moviedbpractice.network.ApiServices
-import com.aniket.moviedbpractice.responses.NowPlayingMoviesResponse
+import com.aniket.moviedbpractice.responses.MoviesListResponse
 import com.aniket.moviedbpractice.responses.base.BaseError
 import com.aniket.moviedbpractice.responses.base.Result
 import com.squareup.moshi.JsonAdapter
@@ -16,7 +16,7 @@ class MovieListRepository(private val apiServices: ApiServices) : BaseRepository
         Moshi.Builder().build()
     }
 
-    suspend fun getNowPlayingMovies(): Result<NowPlayingMoviesResponse> {
+    suspend fun getNowPlayingMovies(): Result<MoviesListResponse> {
 
         return safeApiCall("Something went wrong",
             call = {

@@ -20,6 +20,7 @@ import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.MovieListRepository
 import com.aniket.moviedbpractice.responses.MovieData
 import com.aniket.moviedbpractice.responses.base.EventObserver
+import com.aniket.moviedbpractice.ui.MovieAdapter.Companion.MOVIE_FULL_ITEM_TYPE
 import com.aniket.moviedbpractice.util.exhaustive
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModel
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModelFactory
@@ -65,7 +66,7 @@ class MovieListFragment : Fragment() {
 
             binding.rvMovieList.apply {
                 visibility = VISIBLE
-                adapter = MovieAdapter(it, viewModel)
+                adapter = MovieAdapter(it, viewModel, MOVIE_FULL_ITEM_TYPE)
             }
 
         })

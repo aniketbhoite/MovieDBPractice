@@ -16,6 +16,8 @@ import com.aniket.moviedbpractice.databinding.FragmentMovieDetailBinding
 import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.DetailedRepository
 import com.aniket.moviedbpractice.responses.MovieData
+import com.aniket.moviedbpractice.ui.MovieAdapter.Companion.MOVIE_THUMB_ITEM_TYPE
+import com.aniket.moviedbpractice.util.MarginItemDecoration
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModel
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModelFactory
 
@@ -61,8 +63,25 @@ class MovieDetailFragment : Fragment() {
                 binding.rvReviews.apply {
                     layoutManager = LinearLayoutManager(activity)
                     setHasFixedSize(true)
-                    isNestedScrollingEnabled = false
                     adapter = ReviewsAdapter(data.reviewsResponse.results)
+                }
+            }
+        })
+
+
+        viewModel.getSimilarMovies().observe(this, Observer {
+            val list = it
+            if (list.isEmpty()) {
+                hideSimilarSection()
+            } else {
+                binding.rvSimilar.apply {
+                    layoutManager =
+                        LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                    setHasFixedSize(true)
+                    addItemDecoration(
+                        MarginItemDecoration(12)
+                    )
+                    adapter = MovieAdapter(list, null, MOVIE_THUMB_ITEM_TYPE)
                 }
             }
         })
@@ -80,6 +99,13 @@ class MovieDetailFragment : Fragment() {
         binding.apply {
             tvReviewsTitle.visibility = GONE
             rvReviews.visibility = GONE
+        }
+    }
+
+    private fun hideSimilarSection() {
+        binding.apply {
+            tvSimilarTo.visibility = GONE
+            rvSimilar.visibility = GONE
         }
     }
 

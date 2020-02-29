@@ -2,7 +2,7 @@ package com.aniket.moviedbpractice.network
 
 import com.aniket.moviedbpractice.responses.Credits
 import com.aniket.moviedbpractice.responses.MovieSynopsis
-import com.aniket.moviedbpractice.responses.NowPlayingMoviesResponse
+import com.aniket.moviedbpractice.responses.MoviesListResponse
 import com.aniket.moviedbpractice.responses.ReviewsResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,7 +12,7 @@ interface ApiServices {
 
 
     @GET("movie/now_playing")
-    suspend fun getNowPlaying(): Response<NowPlayingMoviesResponse>
+    suspend fun getNowPlaying(): Response<MoviesListResponse>
 
     @GET("movie/{movieId}/reviews")
     suspend fun getReviews(@Path("movieId") movieId: Int): Response<ReviewsResponse>
@@ -22,4 +22,7 @@ interface ApiServices {
 
     @GET("movie/{movieId}/credits")
     suspend fun getCredits(@Path("movieId") movieId: Int): Response<Credits>
+
+    @GET("movie/{movieId}/similar")
+    suspend fun getSimilarMovies(@Path("movieId") movieId: Int): Response<MoviesListResponse>
 }
