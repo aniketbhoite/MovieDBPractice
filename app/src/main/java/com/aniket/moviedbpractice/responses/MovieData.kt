@@ -11,7 +11,7 @@ data class MovieData(
 
     @Json(name = "original_title") val title: String,
 
-    @Json(name = "poster_path") val posterLink: String,
+    @Json(name = "poster_path") val posterLink: String?,
 
     @Json(name = "release_date") val releaseDate: String
 )
