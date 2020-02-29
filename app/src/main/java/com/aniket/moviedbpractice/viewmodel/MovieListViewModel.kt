@@ -37,11 +37,7 @@ class MovieListViewModel(private val repo: MovieListRepository) : ViewModel() {
             when (result) {
                 is Result.Success -> {
                     result.data.results.let {
-                        val temp: MutableList<MovieData> = mutableListOf()
-                        it.map { md ->
-                            temp.add(md)
-                        }
-                        movies.value = temp
+                        movies.value = it.toList()
                         event.value = Event(ViewEvent.FinishedLoading)
                     }
                 }
