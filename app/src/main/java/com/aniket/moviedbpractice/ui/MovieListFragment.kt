@@ -31,8 +31,6 @@ class MovieListFragment : Fragment() {
 
     private lateinit var binding: FragmentMovieListBinding
 
-    private lateinit var menu: Menu
-
     private lateinit var movieAdapter: MovieAdapter
 
     private val viewModel: MovieListViewModel by viewModels {
@@ -143,7 +141,6 @@ class MovieListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.list_screen_menu, menu)
-        this.menu = menu
 
         val search = menu.findItem(R.id.action_search)
         val searchView =

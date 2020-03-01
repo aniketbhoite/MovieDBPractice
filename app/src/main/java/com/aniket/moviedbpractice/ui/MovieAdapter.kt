@@ -69,8 +69,8 @@ class MovieAdapter(
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint.toString().toLowerCase(Locale.ENGLISH)
-                listFiltered = if (query.isEmpty()) {
+                val query = constraint.toString().toLowerCase(Locale.ENGLISH).trim()
+                val filteringList: MutableList<MovieData> = if (query.isEmpty()) {
                     list.toMutableList()
                 } else {
                     val tempList: MutableList<MovieData> = mutableListOf()
@@ -82,23 +82,21 @@ class MovieAdapter(
                     tempList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = listFiltered
+                filterResults.values = filteringList
                 return filterResults
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 if (results != null) {
-//                    val diffCallback = RatingDiffCallback(ratings, newRating)
-//                    val diffResult = DiffUtil.calculateDiff(diffCallback)
-//                    ratings.clear()
-//                    ratings.addAll(rating)
-//                    diffResult.dispatchUpdatesTo(this)
 
                     val tempList = results.values as MutableList<MovieData>
                     val diffCallback = MovieDiffCallback(listFiltered, tempList)
                     val diffResult = DiffUtil.calculateDiff(diffCallback)
-                    listFiltered = tempList
+                    listFiltered.clear()
+                    listFiltered.addAll(tempList)
                     diffResult.dispatchUpdatesTo(this@MovieAdapter)
+
+
                 }
             }
 
