@@ -105,10 +105,11 @@ class MovieListAdapter(
     }
 
 
-    fun submitCopyList(list: MutableList<MovieData>?) {
+    fun submitListFilterable(list: MutableList<MovieData>?) {
         list?.let {
             copyList = it.toMutableList()
         }
+        submitList(list)
     }
 
 }

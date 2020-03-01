@@ -81,8 +81,7 @@ class MovieListFragment : Fragment() {
 
         viewModel.getNowPlayingMovies().observe(this, Observer {
 
-            movieAdapter.submitList(it.toMutableList())
-            movieAdapter.submitCopyList(it.toMutableList())
+            movieAdapter.submitListFilterable(it.toMutableList())
 
         })
 
