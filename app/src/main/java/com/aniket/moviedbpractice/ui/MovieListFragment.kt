@@ -2,12 +2,11 @@ package com.aniket.moviedbpractice.ui
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -32,6 +31,10 @@ class MovieListFragment : Fragment() {
 
     private lateinit var binding: FragmentMovieListBinding
 
+    private lateinit var menu: Menu
+
+    private lateinit var movieAdapter: MovieAdapter
+
     private val viewModel: MovieListViewModel by viewModels {
         MovieListViewModelFactory(MovieListRepository(MovieApiClient.apiServices))
     }
@@ -51,6 +54,7 @@ class MovieListFragment : Fragment() {
         initView()
         initToolBar()
 
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -64,12 +68,16 @@ class MovieListFragment : Fragment() {
             }
         }
 
+        setObservers()
+    }
 
+    private fun setObservers() {
         viewModel.getNowPlayingMovies().observe(this, Observer {
 
             binding.rvMovieList.apply {
                 visibility = VISIBLE
-                adapter = MovieAdapter(it, viewModel, MOVIE_FULL_ITEM_TYPE)
+                movieAdapter = MovieAdapter(it, viewModel, MOVIE_FULL_ITEM_TYPE)
+                adapter = movieAdapter
             }
 
         })
@@ -96,6 +104,7 @@ class MovieListFragment : Fragment() {
                 android.R.color.white
             )
         )
+        binding.toolbar.inflateMenu(R.menu.list_screen_menu)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         (activity as AppCompatActivity).supportActionBar?.title = "Now Playing"
@@ -128,6 +137,35 @@ class MovieListFragment : Fragment() {
                 null
             )
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.list_screen_menu, menu)
+        this.menu = menu
+
+        val search = menu.findItem(R.id.action_search)
+        val searchView =
+            search.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (::movieAdapter.isInitialized) {
+                    movieAdapter.filter.filter(newText)
+                }
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (::movieAdapter.isInitialized) {
+                    movieAdapter.filter.filter(query)
+                }
+                return true
+            }
+        })
+
+
     }
 
 
