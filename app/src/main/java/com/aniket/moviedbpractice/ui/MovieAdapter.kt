@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aniket.moviedbpractice.R
 import com.aniket.moviedbpractice.databinding.ItemMovieBinding
 import com.aniket.moviedbpractice.databinding.ItemMovieThumbBinding
 import com.aniket.moviedbpractice.responses.MovieData
+import com.aniket.moviedbpractice.util.MovieDiffCallback
 import com.aniket.moviedbpractice.viewmodel.MovieItemViewModel
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModel
 import java.util.*
@@ -86,8 +88,17 @@ class MovieAdapter(
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 if (results != null) {
-                    listFiltered = results.values as MutableList<MovieData>
-                    notifyDataSetChanged()
+//                    val diffCallback = RatingDiffCallback(ratings, newRating)
+//                    val diffResult = DiffUtil.calculateDiff(diffCallback)
+//                    ratings.clear()
+//                    ratings.addAll(rating)
+//                    diffResult.dispatchUpdatesTo(this)
+
+                    val tempList = results.values as MutableList<MovieData>
+                    val diffCallback = MovieDiffCallback(listFiltered, tempList)
+                    val diffResult = DiffUtil.calculateDiff(diffCallback)
+                    listFiltered = tempList
+                    diffResult.dispatchUpdatesTo(this@MovieAdapter)
                 }
             }
 
