@@ -1,10 +1,12 @@
 package com.aniket.moviedbpractice.ui
 
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -127,6 +129,10 @@ class MovieListFragment : Fragment() {
     }
 
     private fun openDetailsScreen(movieData: MovieData) {
+        activity?.let {
+            hideKeyboard(it)
+        }
+
         (context as FragmentActivity).supportFragmentManager.commit {
             addToBackStack(this@MovieListFragment::class.java.simpleName)
             add(
@@ -163,6 +169,18 @@ class MovieListFragment : Fragment() {
         })
 
 
+    }
+
+    private fun hideKeyboard(activity: Activity) {
+        val imm: InputMethodManager =
+            activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        var view = activity.currentFocus
+
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 

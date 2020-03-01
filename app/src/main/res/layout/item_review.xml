@@ -27,13 +27,16 @@
             tools:text="@tools:sample/first_names" />
 
         <TextView
+            android:id="@+id/tv_comment"
+            quotedText="@{review.content}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
             android:maxLines="3"
-            android:text="@{review.content}"
+            android:paddingStart="2dp"
+            android:paddingEnd="0dp"
             tools:text="@tools:sample/lorem/random" />
 
 
