@@ -20,7 +20,7 @@ import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.DetailedRepository
 import com.aniket.moviedbpractice.responses.MovieData
 import com.aniket.moviedbpractice.responses.base.EventObserver
-import com.aniket.moviedbpractice.ui.MovieAdapter.Companion.MOVIE_THUMB_ITEM_TYPE
+import com.aniket.moviedbpractice.ui.MovieListAdapter.Companion.MOVIE_THUMB_ITEM_TYPE
 import com.aniket.moviedbpractice.util.MarginItemDecoration
 import com.aniket.moviedbpractice.util.exhaustive
 import com.aniket.moviedbpractice.viewmodel.DetailedViewModel
@@ -34,6 +34,8 @@ class MovieDetailFragment : Fragment() {
     private lateinit var movieData: MovieData
 
     private val reviewListAdapter = ReviewListAdapter()
+
+    private lateinit var movieListAdapter: MovieListAdapter
 
     private val viewModel: DetailedViewModel by viewModels {
         DetailedViewModelFactory(
@@ -69,6 +71,17 @@ class MovieDetailFragment : Fragment() {
             adapter = reviewListAdapter
         }
 
+        binding.rvSimilar.apply {
+            layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            addItemDecoration(
+                MarginItemDecoration(12)
+            )
+            movieListAdapter = MovieListAdapter(null, MOVIE_THUMB_ITEM_TYPE)
+            adapter = movieListAdapter
+        }
+
         viewModel.getDetailsData().observe(this, Observer {
             val data = it
             if (data.reviewsResponse == null || data.reviewsResponse.results.isEmpty())
@@ -84,15 +97,7 @@ class MovieDetailFragment : Fragment() {
             if (list.isEmpty()) {
                 hideSimilarSection()
             } else {
-                binding.rvSimilar.apply {
-                    layoutManager =
-                        LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                    setHasFixedSize(true)
-                    addItemDecoration(
-                        MarginItemDecoration(12)
-                    )
-                    adapter = MovieAdapter(list, null, MOVIE_THUMB_ITEM_TYPE)
-                }
+                movieListAdapter.submitList(list.toMutableList())
             }
         })
 

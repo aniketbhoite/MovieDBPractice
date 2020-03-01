@@ -23,7 +23,7 @@ import com.aniket.moviedbpractice.network.MovieApiClient
 import com.aniket.moviedbpractice.repositories.MovieListRepository
 import com.aniket.moviedbpractice.responses.MovieData
 import com.aniket.moviedbpractice.responses.base.EventObserver
-import com.aniket.moviedbpractice.ui.MovieAdapter.Companion.MOVIE_FULL_ITEM_TYPE
+import com.aniket.moviedbpractice.ui.MovieListAdapter.Companion.MOVIE_FULL_ITEM_TYPE
 import com.aniket.moviedbpractice.util.exhaustive
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModel
 import com.aniket.moviedbpractice.viewmodel.MovieListViewModelFactory
@@ -33,7 +33,7 @@ class MovieListFragment : Fragment() {
 
     private lateinit var binding: FragmentMovieListBinding
 
-    private lateinit var movieAdapter: MovieAdapter
+    private lateinit var movieAdapter: MovieListAdapter
 
     private val viewModel: MovieListViewModel by viewModels {
         MovieListViewModelFactory(MovieListRepository(MovieApiClient.apiServices))
@@ -72,13 +72,17 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setObservers() {
+
+        binding.rvMovieList.apply {
+            visibility = VISIBLE
+            movieAdapter = MovieListAdapter(viewModel, MOVIE_FULL_ITEM_TYPE)
+            adapter = movieAdapter
+        }
+
         viewModel.getNowPlayingMovies().observe(this, Observer {
 
-            binding.rvMovieList.apply {
-                visibility = VISIBLE
-                movieAdapter = MovieAdapter(it, viewModel, MOVIE_FULL_ITEM_TYPE)
-                adapter = movieAdapter
-            }
+            movieAdapter.submitList(it.toMutableList())
+            movieAdapter.submitCopyList(it.toMutableList())
 
         })
 
