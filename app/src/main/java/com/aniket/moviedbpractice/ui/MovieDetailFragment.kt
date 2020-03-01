@@ -33,6 +33,8 @@ class MovieDetailFragment : Fragment() {
 
     private lateinit var movieData: MovieData
 
+    private val reviewListAdapter = ReviewListAdapter()
+
     private val viewModel: DetailedViewModel by viewModels {
         DetailedViewModelFactory(
             DetailedRepository(MovieApiClient.apiServices),
@@ -60,16 +62,19 @@ class MovieDetailFragment : Fragment() {
     }
 
     private fun initView() {
+
+        binding.rvReviews.apply {
+            layoutManager = LinearLayoutManager(activity)
+            setHasFixedSize(true)
+            adapter = reviewListAdapter
+        }
+
         viewModel.getDetailsData().observe(this, Observer {
             val data = it
             if (data.reviewsResponse == null || data.reviewsResponse.results.isEmpty())
                 hideReviewSection()
             else {
-                binding.rvReviews.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    setHasFixedSize(true)
-                    adapter = ReviewsAdapter(data.reviewsResponse.results)
-                }
+                reviewListAdapter.submitList(data.reviewsResponse.results.toList())
             }
         })
 
