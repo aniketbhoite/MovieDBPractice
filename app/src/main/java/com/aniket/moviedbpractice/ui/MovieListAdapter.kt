@@ -77,8 +77,8 @@ class MovieListAdapter(
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint.toString().toLowerCase(Locale.ENGLISH).trim()
-                val filteringList: MutableList<MovieData> = if (query.isEmpty()) {
+                val query = constraint.toString().toLowerCase(Locale.ENGLISH)
+                val filteringList: MutableList<MovieData> = if (query.isBlank()) {
                     copyList.toMutableList()
                 } else {
                     val tempList: MutableList<MovieData> = mutableListOf()
