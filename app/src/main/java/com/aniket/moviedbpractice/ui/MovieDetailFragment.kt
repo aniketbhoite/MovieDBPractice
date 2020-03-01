@@ -2,6 +2,7 @@ package com.aniket.moviedbpractice.ui
 
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -9,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -109,9 +111,24 @@ class MovieDetailFragment : Fragment() {
         binding.ivBackNev.setOnClickListener {
             activity?.onBackPressed()
         }
+
+        binding.root.let {
+            it.isFocusableInTouchMode = true
+            it.requestFocus()
+            it.setOnKeyListener { _, keyCode, _ ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    (context as FragmentActivity).supportFragmentManager.popBackStack()
+                    true
+                } else
+                    false
+            }
+        }
     }
 
     companion object {
+
+        const val FRAGMENT_TAG = "MOVIE_DETAILS_FRAGMENT"
+
         fun getInstance(data: MovieData): MovieDetailFragment {
             return MovieDetailFragment().apply {
                 movieData = data
@@ -141,7 +158,7 @@ class MovieDetailFragment : Fragment() {
         }
     }
 
-    private fun showDetails(){
+    private fun showDetails() {
         binding.clDetailsContainer.visibility = VISIBLE
     }
 

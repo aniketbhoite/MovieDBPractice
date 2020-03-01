@@ -1,6 +1,7 @@
 package com.aniket.moviedbpractice.util
 
 import android.graphics.Color
+import android.os.Build
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.QuoteSpan
@@ -34,10 +35,18 @@ fun TextView.setQuotedText(string: String) {
 
     val spannable = SpannableString(string)
     spannable.setSpan(
-        QuoteSpan(Color.RED), 0, spannable.length,
+        getQuotedSpan(), 0, spannable.length,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
     this.text = spannable
 
+}
+
+fun getQuotedSpan(): QuoteSpan {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        QuoteSpan(Color.RED, 6, 10)
+
+    } else
+        QuoteSpan(Color.RED)
 }

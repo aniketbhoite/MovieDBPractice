@@ -138,7 +138,7 @@ class MovieListFragment : Fragment() {
             add(
                 R.id.container,
                 MovieDetailFragment.getInstance(movieData),
-                null
+                MovieDetailFragment.FRAGMENT_TAG
             )
         }
     }
