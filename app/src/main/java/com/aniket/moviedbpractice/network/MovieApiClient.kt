@@ -2,6 +2,7 @@ package com.aniket.moviedbpractice.network
 
 import com.aniket.moviedbpractice.util.BASE_URL
 import com.aniket.moviedbpractice.util.MOVIEDB_API_KEY
+import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -51,5 +52,9 @@ object MovieApiClient {
 
     val apiServices: ApiServices by lazy {
         retrofit.create(ApiServices::class.java)
+    }
+
+    val moshi: Moshi by lazy {
+        Moshi.Builder().build()
     }
 }
