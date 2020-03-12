@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_format_quote_start"
+    android:fromDegrees="180"
+    android:pivotY="28">
+
+</rotate>

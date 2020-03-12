@@ -1,10 +1,10 @@
 package com.aniket.moviedbpractice.util
 
-import android.graphics.Color
-import android.os.Build
+import android.text.Spannable
 import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.QuoteSpan
+import android.text.style.ImageSpan
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -33,20 +33,52 @@ fun ImageView.loadUrl(imagePath: String?) {
 @BindingAdapter("quotedText", requireAll = true)
 fun TextView.setQuotedText(string: String) {
 
-    val spannable = SpannableString(string)
-    spannable.setSpan(
-        getQuotedSpan(), 0, spannable.length,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
+    var spannable = SpannableString(string.trim())
 
-    this.text = spannable
+    this.setText(spannable, TextView.BufferType.SPANNABLE)
+
+
+    this.waitForLayout {
+        val start: Int = this.layout.getLineStart(0)
+        val noLines =
+            if (this.lineCount < this.maxLines)
+                this.lineCount else this.maxLines
+
+        val end: Int = this.layout.getLineEnd(noLines - 1)
+
+        val displayed: String = this.text.toString().substring(start, end - 5)
+        spannable = SpannableString(" ${displayed.trim()}... ")
+
+
+        spannable.setSpan(
+            ImageSpan(this.context, R.drawable.ic_format_quote_start),
+            0,
+            1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            ImageSpan(this.context, R.drawable.ic_format_quote_end),
+            spannable.length - 1,
+            spannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        this.setText(spannable, TextView.BufferType.SPANNABLE)
+    }
+
 
 }
 
-fun getQuotedSpan(): QuoteSpan {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        QuoteSpan(Color.RED, 6, 10)
 
-    } else
-        QuoteSpan(Color.RED)
+/**
+ * Easy way to use addOnGlobalLayoutListener
+ * Checkout full explanation and alternative ways https://antonioleiva.com/kotlin-ongloballayoutlistener/
+ */
+inline fun View.waitForLayout(crossinline func: () -> Unit) = with(viewTreeObserver) {
+    addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            removeOnGlobalLayoutListener(this)
+            func()
+        }
+    })
 }
