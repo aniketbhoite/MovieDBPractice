@@ -22,7 +22,7 @@ fun ImageView.loadUrl(imagePath: String?) {
 
     var url = imagePath
     if (!imagePath.contains("https://"))
-        url = MOVIEDB_IMAGE_PRFIX_LINK + imagePath
+        url = MOVIEDB_IMAGE_PREFIX_LINK + imagePath
 
 
     this.load(url) {
